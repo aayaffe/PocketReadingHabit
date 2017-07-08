@@ -9,10 +9,27 @@ import config
 
 access_token_file = os.path.expanduser('~/pocket_reminder_access_token')
 
+html_page_after_authenticated_with_pocket = u'''
+<html>
+<body>
+Succesfully authenticated against pocket <br>
+You should soon receive a mail with a suggested article to read
+</body>
+</html>
+'''.encode()
+
+class PocketAuthenticationWaiter(BaseHTTPRequestHandler):
+    def do_GET(self):
+        global html_page_after_authenticated_with_pocket
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        self.wfile.write(html_page_after_authenticated_with_pocket)
+        
 def get_user_permission_for_pocket():
     print ("Preparing to get authenticated with pocket, may take a few seconds")
     server_address = ('0.0.0.0', config.localhost_port)
-    httpd = HTTPServer(server_address, BaseHTTPRequestHandler)
+    httpd = HTTPServer(server_address, PocketAuthenticationWaiter)
     redirect_uri = 'http://localhost:' + str(config.localhost_port)
     request_token = Pocket.get_request_token(consumer_key=config.pocket_consumer_key, redirect_uri=redirect_uri)
     auth_url = Pocket.get_auth_url(code=request_token, redirect_uri=redirect_uri)
