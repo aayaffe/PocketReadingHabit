@@ -4,10 +4,13 @@ import os
 from time import sleep
 from http.server import *
 import webbrowser
+
+import history
 import mail
 import config
 
 access_token_file = os.path.expanduser('~/pocket_reminder_access_token')
+history_file = os.path.expanduser('~/pocket_reminder_history')
 
 def get_user_permission_for_pocket():
     print ("Preparing to get authenticated with pocket, may take a few seconds")
@@ -79,11 +82,19 @@ print(url)
 minutes = int(word_count)//178
 print("Read time (min): " + str(minutes))
 
+history.write_amount(history_file, list_length)
+imp_path = history.get_graph(history_file)
+
+
 
 subject = "Here is what you need to read today"
-msg = "With only " + str(list_length) + \
+txtmsg = "With only " + str(list_length) + \
       " items left in your pocket read list, here is what I offer you to read today\n" + title +\
       "\nwhich will take you " + str(minutes) + " minutes to read.\n" + url
 
-response = mail.send_mailgun_msg(config, subject, msg)
+htmlmsg = "With only " + str(list_length) + \
+      " items left in your pocket read list, here is what I offer you to read today: <br/> <B>" + title +\
+      "</B><br/>which will take you " + str(minutes) + " minutes to read.\n" + url
+
+response = mail.send_mailgun_msg(config, subject, txtmsg, htmlmsg, imp_path)
 print (response)
