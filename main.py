@@ -77,6 +77,10 @@ print('Number of items in Pocket list is: ' + str(list_length))
 rand_key = random.choice(list(art_list.keys()))
 rand_article = art_list[rand_key]
 title = rand_article['resolved_title']
+if len(title)==0 or title.isspace():
+    title = rand_article['given_title']
+if len(title)==0 or title.isspace():
+    title = rand_article['resolved_url']
 word_count = rand_article['word_count']
 id = rand_article['item_id']
 url = "https://getpocket.com/a/read/" + id
