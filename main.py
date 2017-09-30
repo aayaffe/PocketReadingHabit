@@ -3,7 +3,6 @@ import random
 import os
 from http.server import *
 import webbrowser
-
 import history
 import mail
 import config

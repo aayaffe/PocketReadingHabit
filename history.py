@@ -1,12 +1,8 @@
 import csv
 import datetime
-from os import path
-
-import matplotlib
-import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import mlab
 from matplotlib.dates import YearLocator, MonthLocator, DateFormatter, DayLocator
+from matplotlib.ticker import FormatStrFormatter
 
 
 def write_amount(path, amount):
@@ -26,18 +22,20 @@ def get_graph(path):
         years = YearLocator()  # every year
         months = MonthLocator()  # every month
         days = DayLocator()
-        yearsFmt = DateFormatter('%Y-%m-%d')
+        yFormatter = FormatStrFormatter('%d')
+        yearsFmt = DateFormatter('%d-%m-%Y')
         dates = [(i[0]) for i in list]
         values = [(i[1]) for i in list]
         fig, ax = plt.subplots()
         ax.plot_date(dates, values, '-')
 
         # format the ticks
-        ax.xaxis.set_major_locator(months)
+        # ax.xaxis.set_major_locator(months)
         ax.xaxis.set_major_formatter(yearsFmt)
         ax.xaxis.set_minor_locator(days)
         ax.autoscale_view()
 
+        ax.yaxis.set_major_formatter(yFormatter)
 
         ax.fmt_xdata = DateFormatter('%Y-%m-%d')
 
