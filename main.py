@@ -82,7 +82,7 @@ if len(title)==0 or title.isspace():
     title = rand_article['resolved_url']
 word_count = rand_article['word_count']
 id = rand_article['item_id']
-url = "https://getpocket.com/a/read/" + id
+url = "https://app.getpocket.com/read/" + id
 delete_url = "https://getpocket.com/v3/send?actions=%5B%7B%22action%22%3A%22delete%22%2C%22item_id%22%3A" + id + "%7D%5D&access_token=" + existing_token() + "&consumer_key=" + config.pocket_consumer_key
 print(title)
 print(word_count)
