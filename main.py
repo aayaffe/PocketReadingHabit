@@ -34,7 +34,7 @@ def get_user_permission_for_pocket():
 def existing_token():
     global access_token_file
 
-    if os.path.isfile(access_token_file) == False:
+    if not os.path.isfile(access_token_file):
         return ''
 
     with open(access_token_file, 'r') as f:

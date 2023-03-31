@@ -8,15 +8,16 @@ from matplotlib.ticker import FormatStrFormatter
 def write_amount(path, amount):
     with open(path, "a") as ofile:
         writer = csv.writer(ofile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
-        writer.writerow((datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),amount))
+        writer.writerow((datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), amount))
+
 
 def get_graph(path):
     list = []
     with open(path) as ifile:
         reader = csv.reader(ifile)
         for row in reader:
-            if len(row)==2:
-                t=tuple([datetime.datetime.strptime(row[0],"%Y-%m-%d %H:%M:%S"),row[1]])
+            if len(row) == 2:
+                t = tuple([datetime.datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S"), row[1]])
                 list.append(t)
         print(list)
         years = YearLocator()  # every year
@@ -25,7 +26,7 @@ def get_graph(path):
         yFormatter = FormatStrFormatter('%d')
         yearsFmt = DateFormatter('%d-%m-%Y')
         dates = [(i[0]) for i in list]
-        values = [(i[1]) for i in list]
+        values = [(int(i[1])) for i in list]
         fig, ax = plt.subplots()
         ax.plot_date(dates, values, '-')
 
@@ -48,4 +49,3 @@ def get_graph(path):
 
         plt.savefig('img.png')
         return "img.png"
-        # plt.show()
